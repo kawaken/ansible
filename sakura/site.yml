@@ -1,0 +1,9 @@
+---
+# Add offcial repositories
+- name: nginx repository key
+  rpm_key: key=http://nginx.org/keys/nginx_signing.key state=present
+
+- name: nginx repository
+  yum: name=http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm state=present
+
+
