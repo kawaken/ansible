@@ -1,4 +1,7 @@
 ---
-- name: nginx repository
+- name: nginx repository is enabled
   yum: name=http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm state=present
+
+- name: nginx is installed
+  yum: name=nginx state=present
 

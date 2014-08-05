@@ -1,3 +1,13 @@
 ---
-- name: postgresql repository
+- name: postgresql repository is enabled
   yum: name=http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm state=present
+
+- name: postgresql is installed
+  yum: name={{item}} state=present
+  with_items:
+    - postgresql93
+    - postgresql93-contrib
+    - postgresql93-devel
+    - postgresql93-libs
+    - postgresql93-python
+    - postgresql93-server
