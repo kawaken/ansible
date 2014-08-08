@@ -1,0 +1,26 @@
+---
+- name: zsh source is downloaded
+  get_url:
+    url: "http://downloads.sourceforge.net/project/zsh/zsh/{{zsh_version}}/zsh-{{zsh_version}}.tar.bz2"
+    dest: "/usr/local/src/zsh-{{zsh_version}}.tar.bz2"
+
+- name: "zsh-{{zsh_version}}.tar.bz2 is unarchived"
+  command: "tar xf /usr/local/src/zsh-{{zsh_version}}.tar.bz2"
+  args:
+    chdir: /usr/local/src
+    creates: "/usr/local/src/zsh-{{zsh_version}}"
+
+- name: zsh is configured
+  command: "./configure --enable-multibyte --with-tcsetpgrp"
+  args:
+    chdir: "/usr/local/src/zsh-{{zsh_version}}"
+    creates: "/usr/local/src/zsh-{{zsh_version}}/Makefile"
+
+- name: zsh is installed
+  shell: "make && make install"
+  args:
+    chdir: "/usr/local/src/zsh-{{zsh_version}}"
+    creates: "/usr/local/bin/zsh"
+
+- name: zsh is listed in /etc/shells
+  lineinfile: dest=/etc/shells insertafter=EOF line=/usr/local/bin/zsh

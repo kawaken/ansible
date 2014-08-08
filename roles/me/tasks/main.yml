@@ -1,7 +1,14 @@
 ---
 # role for my account
 - name: my account is created
-  user: name={{user}}
+  user: name={{user}} shell=/usr/local/bin/zsh
+
+- name: "{{user}} is sudoer"
+  lineinfile:
+    dest: "/etc/sudoers.d/{{user|replace('.', '_')}}"
+    create: yes
+    insertafter: EOF
+    line: '{{user}}    ALL=(ALL)    NOPASSWD: ALL'
 
 - name: public keys is downloaded
   get_url: url=https://github.com/kawaken.keys dest=/tmp/{{user}}_pubkeys
@@ -10,9 +17,11 @@
 - name: authorized_keys is set up
   authorized_key: user={{user}} key="{{ lookup('file', '/tmp/'+user+'_pubkeys') }}"
 
-- name: dotfiles is downloaded
+- name: repository of dotfiles is cloned
   sudo_user: "{{user}}"
-  git: repo="https://github.com/kawaken/dotfiles.git" dest=dotfiles
+  git: repo="https://github.com/kawaken/dotfiles.git"
+    dest=/home/{{user}}/dotfiles
+    executable=/usr/local/bin/git
 
 - name: files in dotfiles are symbolic link
   sudo_user: "{{user}}"
@@ -20,3 +29,13 @@
   with_fileglob:
     - /home/{{user}}/dotfiles/_*
 
+- name: projects directory is created
+  sudo_user: "{{user}}"
+  file: path=/home/{{user}}/projects state=directory
+
+- name: git config is  set up
+  sudo_user: "{{user}}"
+  command: "git config --global {{item.conf}} '{{item.val}}'"
+  with_items:
+    - { conf: 'user.name', val: "{{git_username}}" }
+    - { conf: 'user.email', val: "{{git_useremail}}" }

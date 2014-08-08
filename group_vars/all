@@ -1,2 +1,8 @@
 ---
 user: kawaken
+
+zsh_version: 5.0.5
+
+git_version: 2.0.4
+git_username: "Kentaro Kawano"
+git_useremail: "kentaro.kawano@gmail.com"

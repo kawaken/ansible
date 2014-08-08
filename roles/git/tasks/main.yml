@@ -1,0 +1,31 @@
+---
+- name: required packages is installed
+  yum: name={{item}}
+  with_items:
+    - perl-ExtUtils-MakeMaker
+    - libcurl
+    - libcurl-devel
+    - expat-devel
+
+- name: git source is downloaded
+  get_url:
+    url: "https://www.kernel.org/pub/software/scm/git/git-{{git_version}}.tar.gz"
+    dest: "/usr/local/src/git-{{git_version}}.tar.gz"
+
+- name: "git-{{git_version}}.tar.gz is unarchived"
+  command: "tar xf /usr/local/src/git-{{git_version}}.tar.gz"
+  args:
+    chdir: /usr/local/src
+    creates: /usr/local/src/git-{{git_version}}
+
+- name: git is configured
+  command: "./configure"
+  args:
+    chdir: "/usr/local/src/git-{{git_version}}"
+    creates: "/usr/local/src/git-{{git_version}}/config.status"
+
+- name: git is installed
+  shell: "make && make install"
+  args:
+    chdir: "/usr/local/src/git-{{git_version}}"
+    creats: "/usr/local/bin/git"
