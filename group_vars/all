@@ -8,3 +8,7 @@ git_username: "Kentaro Kawano"
 git_useremail: "kentaro.kawano@gmail.com"
 
 vim_version: 7.4
+
+ruby_version: 2.1.2
+
+python_version: 2.7.8
