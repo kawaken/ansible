@@ -1,0 +1,34 @@
+---
+- name: required packages is installed
+  yum: name={{item}}
+  with_items:
+    - lua-devel
+    - python-devel
+    - ruby-devel
+
+- name: vim source is downloaded
+  get_url:
+    url: "http://mirrors.go-parts.com/pub/vim/unix/vim-{{vim_version}}.tar.bz2"
+    dest: "/usr/local/src/vim-{{vim_version}}.tar.bz2"
+
+- name: "vim-{{vim_version}}.tar.bz2 is unarchived"
+  command: "tar xf /usr/local/src/vim-{{vim_version}}.tar.bz2"
+  args:
+    chdir: /usr/local/src
+    creates: "/usr/local/src/vim{{vim_version|replace('.','')}}"
+
+- name: vim is configured
+  command: "./configure --enable-multibyte --with-features=huge \
+          --disable-selinux --prefix=/usr/local \
+          --enable-luainterp=yes --with-lua-prefix=/usr \
+          --enable-pythoninterp=yes --with-python-config-dir=/usr/bin \
+          --enable-rubyinterp=yes --with-ruby-command=/usr/bin/ruby"
+  args:
+    chdir: "/usr/local/src/vim{{vim_version|replace('.','')}}"
+    creates: "/usr/local/src/vim{{vim_version|replace('.','')}}/src/auto/config.status"
+
+- name: vim is installed
+  shell: "make && make install"
+  args:
+    chdir: "/usr/local/src/vim{{vim_version|replace('.', '')}}"
+    creates: "/usr/local/bin/vim"
