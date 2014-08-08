@@ -32,3 +32,16 @@
   args:
     chdir: "/usr/local/src/vim{{vim_version|replace('.', '')}}"
     creates: "/usr/local/bin/vim"
+
+- name: ".vim/bundle directory is created"
+  sudo_user: "{{user}}"
+  file: path=/home/{{user}}/.vim/bundle state=directory
+
+- name: NeoBundle repository is cloned
+  sudo_user: "{{user}}"
+  git: repo="https://github.com/Shougo/neobundle.vim.git" dest="/home/{{user}}/.vim/bundle/neobundle.vim"
+
+# TODO: enable this task
+#- name: NeoBundle is installed
+#  sudo_user: "{{user}}"
+#  command: 'vim +":NeoBundleInstall" +:q'
