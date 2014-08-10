@@ -63,3 +63,7 @@
 - name: python PATH is set up
   sudo_user: "{{user}}"
   lineinfile: dest=/home/{{user}}/.zshenv insertafter=EOF line="export PATH=$HOME/local/python-{{python_version}}/bin:$PATH"
+
+- name: postgresql PATH is set up
+  sudo_user: "{{user}}"
+  lineinfile: dest=/home/{{user}}/.zshenv insertafter=EOF line="export PATH=/usr/pgsql-{{postgresql_version}}/bin:$PATH"
