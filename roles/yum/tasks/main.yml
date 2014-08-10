@@ -2,3 +2,29 @@
 - name: EPEL repository is enabled
   yum: name=http://ftp.jaist.ac.jp/pub/Linux/Fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
 
+- name: yum-fastestmirror is installed
+  yum: name="yum-fastestmirror"
+
+- name: required packages is installed
+  yum: name={{item}}
+  with_items:
+    [
+      "kernel-devel",
+      "@develop",
+      "nkf",
+      "tree",
+      "htop",
+      "bind-utils",
+      "git",
+      "mysql-devel",
+      "sqlite-devel",
+      "readline-devel",
+      "openssl-devel",
+      "libxml2-devel",
+      "libxslt-devel",
+      "ctags",
+      "libyaml-devel",
+    ]
+
+- name: upgrade all packages
+  yum: name=* state=latest
