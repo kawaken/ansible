@@ -28,4 +28,4 @@
   shell: "make && make install"
   args:
     chdir: "/usr/local/src/git-{{git_version}}"
-    creats: "/usr/local/bin/git"
+    creates: "/usr/local/bin/git"
