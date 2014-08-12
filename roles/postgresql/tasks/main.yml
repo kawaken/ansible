@@ -11,3 +11,9 @@
     - postgresql{{postgresql_version|replace('.','')}}-libs
     - postgresql{{postgresql_version|replace('.','')}}-python
     - postgresql{{postgresql_version|replace('.','')}}-server
+
+- name: initdb is executed
+  command: service postgresql-{{postgresql_version}} initdb creates=/var/lib/pgsql/{{postgresql_version}}/data/postgresql.conf
+
+- name: postgresql service is enabled
+  service: name=postgresql-{{postgresql_version}} enabled=yes state=started
