@@ -1,0 +1,4 @@
+---
+- name: ホスト名を設定する
+  hostname: name={{hostname}}
+  when: hostname != ""
