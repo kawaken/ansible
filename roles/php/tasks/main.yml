@@ -1,0 +1,12 @@
+---
+- name: php source is downloaded
+  get_url:
+    url: "http://jp1.php.net/get/php-{{php_version}}.tar.bz2/from/this/mirror"
+    dest: "/usr/local/src/php-{{php_version}}.tar.bz2"
+
+- name: php source is unarchived
+  command: "tar xf /usr/local/src/php-{{php_version}}.tar.bz2"
+  args:
+    chdir: /usr/local/src
+    creates: /usr/local/src/php-{{php_version}}
+
