@@ -1,4 +1,14 @@
 ---
+- name: required packages is installed
+  yum: name={{item}}
+  with_items:
+    - bzip2-devel
+    - bzip2-libs
+    - openjpeg-devel
+    - openjpeg-libs
+    - libjpeg-turbo-devel
+    - libpng-devel
+
 - name: php source is downloaded
   get_url:
     url: "http://jp1.php.net/get/php-{{php_version}}.tar.bz2/from/this/mirror"
@@ -9,4 +19,39 @@
   args:
     chdir: /usr/local/src
     creates: /usr/local/src/php-{{php_version}}
+
+- name: php is configured
+  command: >-
+    ./configure
+    --with-curl
+    --with-pear
+    --with-gd
+    --with-jpeg-dir
+    --with-png-dir
+    --with-zlib
+    --with-mcrypt
+    --with-mhash
+    --with-mysql
+    --with-mysqli
+    --with-pdo-mysql
+    --with-openssl
+    --with-xmlrpc
+    --with-xsl
+    --with-bz2
+    --with-gettext
+    --enable-fpm
+    --enable-exif
+    --enable-wddx
+    --enable-zip
+    --enable-bcmath
+    --enable-calendar
+    --enable-mbstring
+    --enable-soap
+    --enable-sockets
+    --enable-sqlite-utf8
+    --enable-shmop
+    --enable-dba
+  args:
+    chdir: "/usr/local/src/php-{{php_version}}"
+    creates: "/usr/local/src/php-{{php_version}}/config.status"
 
