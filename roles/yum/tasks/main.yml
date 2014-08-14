@@ -8,23 +8,22 @@
 - name: required packages is installed
   yum: name={{item}}
   with_items:
-    [
-      "kernel-devel",
-      "@develop",
-      "nkf",
-      "tree",
-      "htop",
-      "bind-utils",
-      "git",
-      "mysql-devel",
-      "sqlite-devel",
-      "readline-devel",
-      "openssl-devel",
-      "libxml2-devel",
-      "libxslt-devel",
-      "ctags",
-      "libyaml-devel",
-    ]
+    - kernel-devel
+    - @develop
+    - nkf
+    - tree
+    - htop
+    - bind-utils
+    - git
+    - mysql-devel
+    - sqlite-devel
+    - readline-devel
+    - openssl-devel
+    - libxml2-devel
+    - libxslt-devel
+    - ctags
+    - libyaml-devel
+    - libmcrypt-devel
 
 - name: upgrade all packages
   yum: name=* state=latest
