@@ -55,3 +55,9 @@
     chdir: "/usr/local/src/php-{{php_version}}"
     creates: "/usr/local/src/php-{{php_version}}/config.status"
 
+- name: git is installed
+  shell: "make && make install"
+  args:
+    chdir: "/usr/local/src/php-{{php_version}}"
+    creates: "/usr/local/bin/php"
+
