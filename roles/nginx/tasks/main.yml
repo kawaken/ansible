@@ -5,3 +5,22 @@
 - name: nginx is installed
   yum: name=nginx state=present
 
+- name: nginx main conf is set up
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+
+- name: default installed conf file is removed
+  file: path=/etc/nginx/conf.d/default.conf state=absent
+
+- name: nginx default server conf is set up
+  template: src=conf.d/00default.conf dest=/etc/nginx/conf.d/00default.conf
+
+- name: nginx default htdocs directory is created
+  file: path={{item}} state=directory owner=nginx
+  with_items:
+    - /var/www
+    - /var/www/default
+    - /var/www/default/htdocs
+
+- name: nginx service is enabled
+  service: name=nginx enabled=yes state=started
+
