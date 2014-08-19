@@ -2,3 +2,5 @@
 - name: mysql repository is enabled
   yum: name=http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm state=present
 
+- name: mysql is installed
+  yum: name=mysql state=latest
