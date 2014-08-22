@@ -2,5 +2,43 @@
 - name: mysql repository is enabled
   yum: name=http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm state=present
 
-- name: mysql is installed
-  yum: name=mysql state=latest
+- name: default mysql is removed
+  yum: name={{item}} state=absent
+  with_items:
+    - mysql
+    - mysql-devel
+    - mysql-libs
+
+- name: mysql community version is installed
+  yum: name={{item}} state=latest
+  with_items:
+    - "mysql-community-common"
+    - "mysql-community-client"
+    - "mysql-community-devel"
+    - "mysql-community-libs"
+    - "mysql-community-server"
+
+- name: mysql server is enabled
+  service: name=mysqld enabled=yes state=started
+
+- name: mysql_root_password is not defined
+  debug: msg="mysql_root_password is not defined"
+  when: mysql_root_password is not defined
+
+- name: mysql root password file is set up in tmp
+  template: src=mysql_secure_installation.j2
+    dest=/tmp/mysql_secure_installation
+    owner=root group=root mode=0600
+  when: mysql_root_password is defined
+
+- name: mysql_secure_installation is called
+  shell: cat /tmp/mysql_secure_installation | mysql_secure_installation
+  when: mysql_root_password is defined
+
+- name: mysql root password file is deleted
+  file: dest=/tmp/mysql_secure_installation state=absent
+  when: mysql_root_password is defined
+
+- name: mysql server is restarted
+  service: name=mysqld enabled=yes state=restarted
+
