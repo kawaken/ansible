@@ -55,9 +55,33 @@
     chdir: "/usr/local/src/php-{{php_version}}"
     creates: "/usr/local/src/php-{{php_version}}/config.status"
 
-- name: git is installed
+- name: php is installed
   shell: "make && make install"
   args:
     chdir: "/usr/local/src/php-{{php_version}}"
     creates: "/usr/local/bin/php"
 
+- name: /var/log/php-fpm is created
+  file: dest=/var/log/php-fpm state=directory owner=nginx
+
+- name: php-fpm.conf is set up
+  command: mv /usr/local/etc/php-fpm.conf.default /usr/local/etc/php-fpm.conf
+    creates=/usr/local/etc/php-fpm.conf
+
+- name: php-fpm.conf is configured
+  command: sed -i {{item}} /usr/local/etc/php-fpm.conf
+  with_items:
+    - 's/^;pid/pid/'
+    - 's/^;pm.start_servers/pm.start_servers/'
+    - 's/^;pm.min_spare_servers/pm.min_spare_servers/'
+    - 's/^;pm.max_spare_servers/pm.max_spare_servers/'
+
+- name: php-fpm init script is copied
+  command: cp /usr/local/src/php-{{php_version}}/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
+    creates=/etc/init.d/php-fpm
+
+- name: php-fpm inis script is executable
+  file: dest=/etc/init.d/php-fpm state=file mode=0755
+
+- name: php-fpm service is enabled
+  service: name=php-fpm enabled=yes state=started
