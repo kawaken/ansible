@@ -16,3 +16,8 @@ python_version: 2.7.8
 postgresql_version: 9.3
 
 php_version: 5.5.15
+
+wordpress_site_name: wordpress
+wordpress_db_user: wordpress
+wordpress_db_name: wordpress
+wordpress_db_password: ""
