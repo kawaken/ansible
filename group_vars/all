@@ -1,21 +1,23 @@
 ---
 user: kawaken
 
-zsh_version: 5.0.5
+zsh_version: 5.0.7
 
-git_version: 2.0.4
+git_version: 2.2.0
 git_username: "Kentaro Kawano"
 git_useremail: "kentaro.kawano@gmail.com"
 
 vim_version: 7.4
 
-ruby_version: 2.1.2
+ruby_version: 2.1.5
 
-python_version: 2.7.8
+python_version: 2.7.9
 
 postgresql_version: 9.3
 
-php_version: 5.5.15
+php_version: 5.6.3
+
+go_version: 1.3.3
 
 wordpress_site_name: wordpress
 wordpress_db_user: wordpress

@@ -25,7 +25,7 @@
 
 - name: files in dotfiles are symbolic link
   sudo_user: "{{user}}"
-  shell: "for f in `ls /home/{{user}}/dotfiles/_*`; do ln -sf $f `basename $f | tr '_' '.'` ; done"
+  shell: /home/{{user}}/dotfiles/scripts/install
   args:
     creates: /home/{{user}}/.zshenv
 
@@ -48,8 +48,10 @@
 
 - name: ruby is installed
   sudo_user: "{{user}}"
-  command: xbuild/ruby-install {{ruby_version}} ~/local/ruby-{{ruby_version}}
+  command: /home/{{user}}/xbuild/ruby-install {{ruby_version}} ~/local/ruby-{{ruby_version}}
     creates=/home/{{user}}/ruby-{{ruby_version}}
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
 
 - name: ruby PATH is set up
   sudo_user: "{{user}}"
@@ -57,8 +59,10 @@
 
 - name: python is installed
   sudo_user: "{{user}}"
-  command: xbuild/python-install {{python_version}} ~/local/python-{{python_version}}
+  command: /home/{{user}}/xbuild/python-install {{python_version}} ~/local/python-{{python_version}}
     creates=/home/{{user}}/python-{{python_version}}
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
 
 - name: python PATH is set up
   sudo_user: "{{user}}"
@@ -67,3 +71,14 @@
 - name: postgresql PATH is set up
   sudo_user: "{{user}}"
   lineinfile: dest=/home/{{user}}/.zshenv insertafter=EOF line="export PATH=/usr/pgsql-{{postgresql_version}}/bin:$PATH"
+
+- name: golang is installed
+  sudo_user: "{{user}}"
+  command: /home/{{user}}/xbuild/go-install {{go_version}} ~/local/go-{{go_version}}
+    creates=/home/{{user}}/go-{{go_version}}
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  
+- name: golang PATH is set up
+  sudo_user: "{{user}}"
+  lineinfile: dest=/home/{{user}}/.zshenv insertafter=EOF line="export PATH=$HOME/local/go-{{go_version}}/bin:$PATH"
