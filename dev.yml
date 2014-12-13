@@ -4,4 +4,5 @@
   roles:
     - zsh
     - git
+    - vim
     - me
