@@ -6,10 +6,10 @@
   yum: name="yum-fastestmirror"
 
 - name: required packages is installed
-  yum: name={{item}}
+  yum: name="{{item}}"
   with_items:
     - kernel-devel
-    - @develop
+    - "@Development Tools"
     - nkf
     - tree
     - htop
