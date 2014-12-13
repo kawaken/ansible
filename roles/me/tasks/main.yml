@@ -29,6 +29,12 @@
   args:
     creates: /home/{{user}}/.zshenv
 
+- name: vim plugins are installed
+  sudo_user: "{{user}}"
+  shell: /home/{{user}}/dotfiles/scripts/install-vim-plugins
+  args:
+    creates: /home/{{user}}/.vim/bundle
+
 - name: projects directory is created
   sudo_user: "{{user}}"
   file: path=/home/{{user}}/projects state=directory
@@ -82,3 +88,4 @@
 - name: golang PATH is set up
   sudo_user: "{{user}}"
   lineinfile: dest=/home/{{user}}/.zshenv insertafter=EOF line="export PATH=$HOME/local/go-{{go_version}}/bin:$PATH"
+
