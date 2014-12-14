@@ -1,0 +1,7 @@
+---
+- name: opt account is created
+  user: name=odev
+
+- name: /var/sites is created
+  file: path=/var/sites owner=odev group=odev mode=0755 state=directory
+
