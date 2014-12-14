@@ -11,6 +11,7 @@
     line: '{{user}}    ALL=(ALL)    NOPASSWD: ALL'
 
 - name: public keys is downloaded
+  sudo: false
   get_url: url=https://github.com/kawaken.keys dest=/tmp/{{user}}_pubkeys
   delegate_to: localhost
 
