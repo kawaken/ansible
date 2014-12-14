@@ -35,8 +35,8 @@
   shell: cat /tmp/mysql_secure_installation | mysql_secure_installation
   when: mysql_root_password is defined
 
-- name: mysql root password file is deleted
-  file: dest=/tmp/mysql_secure_installation state=absent
+- name: mysql root password file is in /root
+  shell: mv /tmp/mysql_secure_installation /root/mysql_root_password
   when: mysql_root_password is defined
 
 - name: mysql server is restarted
