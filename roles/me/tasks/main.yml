@@ -18,6 +18,9 @@
 - name: authorized_keys is set up
   authorized_key: user={{user}} key="{{ lookup('file', '/tmp/'+user+'_pubkeys') }}"
 
+- name: ssh_config is set up
+  copy: src=ssh_config dest=/home/{{user}}/.ssh/config owner={{user}} mode=0600
+
 - name: repository of dotfiles is cloned
   sudo_user: "{{user}}"
   git: repo="https://github.com/kawaken/dotfiles.git"

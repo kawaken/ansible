@@ -1,0 +1,3 @@
+ServerAliveInterval 15
+ServerAliveCountMax 8
+ForwardAgent yes
