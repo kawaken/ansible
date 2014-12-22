@@ -21,23 +21,23 @@
 - name: mysql server is enabled
   service: name=mysqld enabled=yes state=started
 
-- name: mysql_root_password is not defined
-  debug: msg="mysql_root_password is not defined"
-  when: mysql_root_password is not defined
+- name: generate mysql root password
+  password: dest=mysql_root_password
+
+- name: read mysql root password
+  shell: cat mysql_root_password
+  register: mysql_root_password
 
 - name: mysql root password file is set up in tmp
   template: src=mysql_secure_installation.j2
     dest=/tmp/mysql_secure_installation
     owner=root group=root mode=0600
-  when: mysql_root_password is defined
 
 - name: mysql_secure_installation is called
   shell: cat /tmp/mysql_secure_installation | mysql_secure_installation
-  when: mysql_root_password is defined
 
 - name: mysql root password file is in /root
   shell: mv /tmp/mysql_secure_installation /root/mysql_root_password
-  when: mysql_root_password is defined
 
 - name: mysql server is restarted
   service: name=mysqld enabled=yes state=restarted

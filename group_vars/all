@@ -22,4 +22,4 @@ go_version: 1.4
 wordpress_site_name: wordpress
 wordpress_db_user: wordpress
 wordpress_db_name: wordpress
-wordpress_db_password: ""
+

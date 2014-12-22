@@ -28,7 +28,7 @@ define('DB_NAME', '{{ wordpress_db_name }}');
 define('DB_USER', '{{ wordpress_db_user }}');
 
 /** MySQL データベースのパスワード */
-define('DB_PASSWORD', '{{ wordpress_db_password }}');
+define('DB_PASSWORD', '{{ wordpress_db_password.stdout }}');
 
 /** MySQL のホスト名 */
 define('DB_HOST', 'localhost');

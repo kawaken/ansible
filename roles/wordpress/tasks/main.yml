@@ -18,17 +18,18 @@
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
   register: "wp_salt"
 
-- name: mysql_root_password is not defined
-  debug: msg="mysql_root_password is not defined"
-  when: mysql_root_password is not defined
+- name: generate wordpress db password
+  password: dest=wordpress_db_password
+
+- name: read wordpress db password
+  shell: cat wordpress_db_password
+  register: wordpress_db_password
 
 - name: wordpress database is created
-  mysql_db: name={{wordpress_db_name}} state=present login_user=root login_password={{mysql_root_password}}
-  when: mysql_root_password is defined
+  mysql_db: name={{wordpress_db_name}} state=present login_user=root login_password={{mysql_root_password.stdout}}
 
 - name: wordpress database user
-  mysql_user: name={{ wordpress_db_user }} password={{ wordpress_db_password }} priv={{ wordpress_db_user }}.*:ALL host='localhost' state=present login_user=root login_password={{mysql_root_password}}
-  when: mysql_root_password is defined and wordpress_db_password is defined
+  mysql_user: name={{ wordpress_db_user }} password={{ wordpress_db_password.stdout }} priv={{ wordpress_db_user }}.*:ALL host='localhost' state=present login_user=root login_password={{mysql_root_password.stdout}}
 
 - name: wordpress site is in public directory
   command: cp -r /usr/local/src/wordpress /var/www
