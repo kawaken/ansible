@@ -5,6 +5,9 @@
 - name: yum-fastestmirror is installed
   yum: name="yum-fastestmirror"
 
+- name: only japanese mirrors are used
+  shell: "echo include_only=.jp > /etc/yum/pluginconf.d/fastestmirror.conf"
+
 - name: required packages is installed
   yum: name="{{item}}"
   with_items:
@@ -15,7 +18,6 @@
     - htop
     - bind-utils
     - git
-    - mysql-devel
     - sqlite-devel
     - readline-devel
     - openssl-devel
