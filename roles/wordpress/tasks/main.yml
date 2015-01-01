@@ -18,6 +18,11 @@
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
   register: "wp_salt"
 
+- name: read mysql root password
+  shell: cat mysql_root_password
+  register: mysql_root_password
+  when: mysql_root_password is not defined
+
 - name: generate wordpress db password
   password: dest=wordpress_db_password
 
@@ -32,12 +37,18 @@
   mysql_user: name={{ wordpress_db_user }} password={{ wordpress_db_password.stdout }} priv={{ wordpress_db_user }}.*:ALL host='localhost' state=present login_user=root login_password={{mysql_root_password.stdout}}
 
 - name: wordpress site is in public directory
-  command: cp -r /usr/local/src/wordpress /var/www
+  command: mv /usr/local/src/wordpress /var/www/{{wordpress_site_name}}
   args:
-    creates: /var/www/wordpress
+    creates: /var/www/{{wordpress_site_name}}
 
 - name: config file is copied
-  template: src=wp-config.php dest=/var/www/wordpress/wp-config.php
+  template: src=wp-config.php dest=/var/www/{{wordpress_site_name}}/wp-config.php
+
+- name: log directory is created
+  file: path=/var/www/{{wordpress_site_name}}/log state=directory
 
 - name: onwer is changed
-  file: path=/var/www/wordpress/ owner=nginx group=nginx state=directory recurse=yes
+  file: path=/var/www/{{wordpress_site_name}}/ owner=nginx group=nginx state=directory recurse=yes
+
+- name: nginx config is set up
+  template: src=wordpress.conf dest=/etc/nginx/conf.d/wordpress.conf
