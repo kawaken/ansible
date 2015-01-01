@@ -6,7 +6,7 @@
   yum: name="yum-fastestmirror"
 
 - name: only japanese mirrors are used
-  shell: "echo include_only=.jp > /etc/yum/pluginconf.d/fastestmirror.conf"
+  shell: "echo include_only=.jp >> /etc/yum/pluginconf.d/fastestmirror.conf"
 
 - name: required packages is installed
   yum: name="{{item}}"
