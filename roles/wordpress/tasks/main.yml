@@ -21,7 +21,6 @@
 - name: read mysql root password
   shell: cat mysql_root_password
   register: mysql_root_password
-  when: mysql_root_password is not defined
 
 - name: generate wordpress db password
   password: dest=wordpress_db_password
