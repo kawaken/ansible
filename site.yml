@@ -5,7 +5,6 @@
     - yum
     - nginx
     - postgresql
-    - mysql
     - zsh
     - git
     - vim
