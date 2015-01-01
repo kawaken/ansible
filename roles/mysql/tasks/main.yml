@@ -36,8 +36,11 @@
 - name: mysql_secure_installation is called
   shell: cat /tmp/mysql_secure_installation | mysql_secure_installation
 
-- name: mysql root password file is in /root
-  shell: mv /tmp/mysql_secure_installation /root/mysql_root_password
+- name: remote tempfile
+  shell: rm -f /tmp/mysql_secure_installation
+
+- name: decrease table_definition_cache
+  lineinfile: dest=/etc/my.cnf insertafter="[mysqld]" line="table_definition_cache=400"
 
 - name: mysql server is restarted
   service: name=mysqld enabled=yes state=restarted
