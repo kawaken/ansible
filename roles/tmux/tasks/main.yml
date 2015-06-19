@@ -1,0 +1,29 @@
+---
+- name: required packages is installed
+  yum: name={{item}}
+  with_items:
+    - livevent
+
+- name: tmux source is downloaded
+  get_url:
+    url: "https://github.com/tmux/tmux/releases/download/{{tmux_version}}/tmux-{{tmux_version}}.tar.gz"
+    dest: "/usr/local/src/tmux-{{tmux_version}}.tar.gz"
+
+- name: "tmux-{{tmux_version}}.tar.gz is unarchived"
+  command: "tar xf /usr/local/src/tmux-{{tmux_version}}.tar.gz"
+  args:
+    chdir: /usr/local/src
+    creates: "/usr/local/src/tmux-{{tmux_version}}"
+
+- name: tmux is configured
+  command: "./configure"
+  args:
+    chdir: "/usr/local/src/tmux-{{tmux_version}}"
+    creates: "/usr/local/src/tmux-{{tmux_version}}/config.status"
+
+- name: tmux is installed
+  shell: "make && make install"
+  args:
+    chdir: "/usr/local/src/tmux-{{tmux_version}}"
+    creates: "/usr/local/bin/tmux"
+

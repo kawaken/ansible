@@ -23,3 +23,4 @@ wordpress_site_name: wordpress
 wordpress_db_user: wordpress
 wordpress_db_name: wordpress
 
+tmux_version: 2.0
